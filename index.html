@@ -14,9 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* ===== TODOS TUS ESTILOS EXISTENTES SE MANTIENEN IGUAL ===== */
-    /* (Todo el CSS que ya tienes en tu código permanece exactamente igual) */
-    
+    /* ===== TODOS LOS ESTILOS EXISTENTES SE MANTIENEN IGUAL ===== */
     :root {
       --primary: #00f2ff;
       --secondary: #7000ff;
@@ -3470,11 +3468,11 @@
 
   <script>
     // ============================================
-    // VERSIÓN OPTIMIZADA PARA GITHUB PAGES
+    // VERSIÓN COMPLETA PARA GITHUB PAGES
     // ============================================
     
     // ============================================
-    // SISTEMA DE USUARIOS Y AUTENTICACIÓN (Solo localStorage)
+    // SISTEMA DE USUARIOS Y AUTENTICACIÓN
     // ============================================
     class UserManager {
       constructor() {
@@ -3505,16 +3503,10 @@
       register(userData) {
         // Validar que el usuario no exista
         if (this.users.some(u => u.username === userData.username)) {
-          return {
-            success: false,
-            error: 'El nombre de usuario ya existe'
-          };
+          return { success: false, error: 'El nombre de usuario ya existe' };
         }
         if (this.users.some(u => u.email === userData.email)) {
-          return {
-            success: false,
-            error: 'El email ya está registrado'
-          };
+          return { success: false, error: 'El email ya está registrado' };
         }
 
         // Crear nuevo usuario
@@ -3536,42 +3528,25 @@
         this.users.push(newUser);
         this.saveUsers();
         
-        return {
-          success: true,
-          user: newUser
-        };
+        return { success: true, user: newUser };
       }
 
       login(identifier, password) {
-        // Buscar por username o email
-        const user = this.users.find(u =>
-          u.username === identifier || u.email === identifier
-        );
+        const user = this.users.find(u => u.username === identifier || u.email === identifier);
 
         if (!user) {
-          return {
-            success: false,
-            error: 'Usuario o contraseña incorrectos'
-          };
+          return { success: false, error: 'Usuario o contraseña incorrectos' };
         }
 
-        // Verificar contraseña
         const hashedPassword = this.hashPassword(password);
         if (user.password !== hashedPassword) {
-          return {
-            success: false,
-            error: 'Usuario o contraseña incorrectos'
-          };
+          return { success: false, error: 'Usuario o contraseña incorrectos' };
         }
 
-        // Actualizar último login
         user.lastLogin = new Date().toISOString();
         this.saveUsers();
 
-        return {
-          success: true,
-          user: user
-        };
+        return { success: true, user: user };
       }
 
       logout() {
@@ -3585,7 +3560,6 @@
           const userData = localStorage.getItem(this.currentUserKey);
           if (userData) {
             const user = JSON.parse(userData);
-            // Buscar el usuario actualizado en la lista
             const currentUser = this.users.find(u => u.id === user.id);
             if (currentUser) {
               this.currentUser = currentUser;
@@ -3601,13 +3575,11 @@
       saveCurrentUser() {
         if (this.currentUser) {
           try {
-            // Actualizar en la lista de usuarios
             const index = this.users.findIndex(u => u.id === this.currentUser.id);
             if (index !== -1) {
               this.users[index] = this.currentUser;
               this.saveUsers();
             }
-            // Guardar en localStorage
             localStorage.setItem(this.currentUserKey, JSON.stringify(this.currentUser));
           } catch (error) {
             console.error('Error al guardar usuario actual:', error);
@@ -3624,15 +3596,11 @@
       }
 
       getRandomColor() {
-        const colors = [
-          '#00f2ff', '#7000ff', '#00ff9d', '#ff0055', '#ffcc00',
-          '#9d4edd', '#ff6b6b', '#4ecdc4', '#ffe66d', '#1a936f'
-        ];
+        const colors = ['#00f2ff', '#7000ff', '#00ff9d', '#ff0055', '#ffcc00', '#9d4edd', '#ff6b6b', '#4ecdc4', '#ffe66d', '#1a936f'];
         return colors[Math.floor(Math.random() * colors.length)];
       }
 
       hashPassword(password) {
-        // Simulación simple de hash (solo para demostración)
         let hash = 0;
         for (let i = 0; i < password.length; i++) {
           const char = password.charCodeAt(i);
@@ -3654,11 +3622,7 @@
           unlockedLevels: Object.keys(levelConfig).filter(key => levelConfig[key].cost === 0),
           completedLevels: [],
           ownedItems: [],
-          equippedItems: {
-            hat: null,
-            glasses: null,
-            item: null
-          },
+          equippedItems: { hat: null, glasses: null, item: null },
           questionTimes: [],
           currentQuestionStartTime: 0,
           questionTimer: null,
@@ -3674,27 +3638,9 @@
 
       updateGameState(newState) {
         if (this.currentUser) {
-          this.currentUser.gameState = {
-            ...this.currentUser.gameState,
-            ...newState
-          };
+          this.currentUser.gameState = { ...this.currentUser.gameState, ...newState };
           this.saveCurrentUser();
         }
-      }
-
-      getRanking() {
-        return this.users
-          .map(user => ({
-            name: user.name,
-            username: user.username,
-            points: user.gameState?.totalPoints || 0,
-            coins: user.gameState?.coins || 0,
-            completed: user.gameState?.completedLevels?.length || 0,
-            level: this.calculateLevel(user.gameState?.totalPoints || 0),
-            avatar: user.avatar
-          }))
-          .sort((a, b) => b.points - a.points)
-          .slice(0, 10);
       }
 
       calculateLevel(points) {
@@ -3739,9 +3685,8 @@
     };
 
     // ============================================
-    // CONFIGURACIONES EXISTENTES (Todos tus datos)
+    // CONFIGURACIONES COMPLETAS
     // ============================================
-    
     const subjectsByYear = {
       primero: [
         { id: 'montaje', name: 'Montaje y mantenimiento de equipo', icon: '🔧', description: 'Componentes hardware, ensamblaje y diagnóstico', color: '#00f2ff' },
@@ -3800,10 +3745,439 @@
       proyecto_dificil: { icon: '📋', title: 'Difícil', description: 'Gestión avanzada de proyectos', cost: 450, color: '#ef4444', year: 'segundo', subject: 'Proyecto intermodular' },
     };
 
-    // Preguntas (Todas tus preguntas existentes aquí)
     const questions = {
-      montaje_facil: [ { q: "¿Qué componente es considerado el cerebro del ordenador?", a: ["cpu", "procesador"], points: 10 } /* ... resto de preguntas ... */ ],
-      // ... todas las demás preguntas que ya tienes en tu código ...
+      montaje_facil: [
+        { q: "¿Qué componente es considerado el cerebro del ordenador?", a: ["cpu", "procesador"], points: 10 },
+        { q: "¿Qué tipo de memoria es volátil?", a: ["ram", "memoria ram"], points: 10 },
+        { q: "¿Qué significa BIOS?", a: ["basic input output system"], points: 10 },
+        { q: "¿Qué dispositivo almacena datos permanentemente?", a: ["disco duro", "hdd"], points: 10 },
+        { q: "¿Qué conector se usa para monitores digitales?", a: ["hdmi", "displayport"], points: 10 },
+        { q: "¿Qué componente convierte corriente alterna a continua?", a: ["fuente de alimentacion"], points: 10 },
+        { q: "¿Qué ranura es para tarjetas gráficas?", a: ["pci express", "pcie"], points: 10 },
+        { q: "¿Qué herramienta evita descargas electrostáticas?", a: ["pulsera antiestatica"], points: 10 },
+        { q: "¿Qué pasta se aplica entre CPU y disipador?", a: ["pasta termica"], points: 10 },
+        { q: "¿Qué indica un pitido largo al encender?", a: ["error de memoria"], points: 10 }
+      ],
+      montaje_medio: [
+        { q: "¿Cuántos pines tiene un conector ATX?", a: ["24", "24 pines"], points: 15 },
+        { q: "¿Qué memoria tiene pines en ambos lados?", a: ["ddr", "dimm"], points: 15 },
+        { q: "¿Qué tecnología Intel permite virtualización?", a: ["vt-x"], points: 15 },
+        { q: "¿Qué formato soporta discos >2TB?", a: ["gpt"], points: 15 },
+        { q: "¿Qué herramienta crimpa cables de red?", a: ["crimpadora"], points: 15 },
+        { q: "¿Qué comprueba MemTest86?", a: ["memoria ram"], points: 15 },
+        { q: "¿Qué refrigeración usa líquido?", a: ["refrigeracion liquida"], points: 15 },
+        { q: "¿Qué significa SATA?", a: ["serial ata"], points: 15 },
+        { q: "¿Qué gestiona CPU, RAM y periféricos?", a: ["chipset"], points: 15 },
+        { q: "¿Qué batería mantiene BIOS?", a: ["pila cmos"], points: 15 }
+      ],
+      montaje_dificil: [
+        { q: "¿Qué PCIe ofrece 16 GT/s?", a: ["pcie 4.0"], points: 20 },
+        { q: "¿Qué protocolo usa NVMe?", a: ["pci express"], points: 20 },
+        { q: "¿Qué mide continuidad en cables?", a: ["multimetro"], points: 20 },
+        { q: "¿Qué indica '1 largo, 3 cortos'?", a: ["error de tarjeta grafica"], points: 20 },
+        { q: "¿Qué RAID es mirroring?", a: ["raid 1"], points: 20 },
+        { q: "¿Qué interfaz usa M.2?", a: ["pcie", "sata"], points: 20 },
+        { q: "¿Qué tecnología overclockea RAM?", a: ["xmp"], points: 20 },
+        { q: "¿Qué test prueba GPU?", a: ["furmark"], points: 20 },
+        { q: "¿Qué socket usa AMD Ryzen 5000?", a: ["am4"], points: 20 },
+        { q: "¿Qué muestra temperaturas?", a: ["hwmonitor"], points: 20 }
+      ],
+      sistemas_facil: [
+        { q: "¿Qué SO de Microsoft es más reciente?", a: ["windows 11"], points: 10 },
+        { q: "¿Qué SO libre está basado en UNIX?", a: ["linux"], points: 10 },
+        { q: "¿Qué comando muestra configuración de red en Windows?", a: ["ipconfig"], points: 10 },
+        { q: "¿Qué sistema de archivos usa Windows?", a: ["ntfs"], points: 10 },
+        { q: "¿Qué comando lista directorios en Linux?", a: ["ls"], points: 10 },
+        { q: "¿Qué atajo copia en Windows?", a: ["ctrl c"], points: 10 },
+        { q: "¿Qué partición tiene archivos de arranque?", a: ["particion de sistema"], points: 10 },
+        { q: "¿Qué comando limpia pantalla en Linux?", a: ["clear"], points: 10 },
+        { q: "¿Qué actualización Windows se instala 2 veces al año?", a: ["feature update"], points: 10 },
+        { q: "¿Qué gestor de arranque es común en Linux?", a: ["grub"], points: 10 }
+      ],
+      sistemas_medio: [
+        { q: "¿Qué comando muestra procesos en Linux?", a: ["ps", "top"], points: 15 },
+        { q: "¿Qué herramienta repara sistema de archivos en Windows?", a: ["chkdsk"], points: 15 },
+        { q: "¿Qué comando cambia permisos en Linux?", a: ["chmod"], points: 15 },
+        { q: "¿Qué registro almacena configuración de usuario en Windows?", a: ["hkey_current_user", "hkcu"], points: 15 },
+        { q: "¿Qué sistema de archivos usa Linux por defecto?", a: ["ext4"], points: 15 },
+        { q: "¿Qué comando crea directorio en Linux?", a: ["mkdir"], points: 15 },
+        { q: "¿Qué herramienta ve eventos en Windows?", a: ["visor de eventos"], points: 15 },
+        { q: "¿Qué comando muestra espacio en disco en Linux?", a: ["df"], points: 15 },
+        { q: "¿Qué partición almacena configuración de arranque en Linux?", a: ["/boot"], points: 15 },
+        { q: "¿Qué comando reinicia Windows desde línea de comandos?", a: ["shutdown /r"], points: 15 }
+      ],
+      sistemas_dificil: [
+        { q: "¿Qué comando sincroniza directorios en Linux?", a: ["rsync"], points: 20 },
+        { q: "¿Qué herramienta crea imágenes de disco en Windows?", a: ["diskmgmt.msc"], points: 20 },
+        { q: "¿Qué comando modifica tabla de particiones en Linux?", a: ["fdisk"], points: 20 },
+        { q: "¿Qué variable de entorno contiene rutas ejecutables?", a: ["path"], points: 20 },
+        { q: "¿Qué servicio gestiona actualizaciones en Windows?", a: ["windows update"], points: 20 },
+        { q: "¿Qué comando comprueba integridad del sistema en Windows?", a: ["sfc /scannow"], points: 20 },
+        { q: "¿Qué demonio gestiona logs en Linux?", a: ["syslog"], points: 20 },
+        { q: "¿Qué herramienta monitoriza rendimiento en Windows?", a: ["performance monitor"], points: 20 },
+        { q: "¿Qué comando configura interfaces de red en Linux?", a: ["ip", "ifconfig"], points: 20 },
+        { q: "¿Qué modo de Windows solo carga controladores esenciales?", a: ["modo seguro"], points: 20 }
+      ],
+      ofimatica_facil: [
+        { q: "¿Qué programa de Microsoft se usa para hojas de cálculo?", a: ["excel"], points: 10 },
+        { q: "¿Qué programa se usa para presentaciones?", a: ["powerpoint"], points: 10 },
+        { q: "¿Qué programa procesa textos?", a: ["word"], points: 10 },
+        { q: "¿Qué atajo guarda un documento?", a: ["ctrl s"], points: 10 },
+        { q: "¿Qué formato de Word guarda como plantilla?", a: [".dotx"], points: 10 },
+        { q: "¿Qué función de Excel suma celdas?", a: ["sum"], points: 10 },
+        { q: "¿Qué programa libre es alternativo a Office?", a: ["libreoffice"], points: 10 },
+        { q: "¿Qué extensión tienen documentos de Word?", a: [".docx"], points: 10 },
+        { q: "¿Qué atajo imprime en la mayoría de programas?", a: ["ctrl p"], points: 10 },
+        { q: "¿Qué programa gestiona correo electrónico?", a: ["outlook"], points: 10 }
+      ],
+      ofimatica_medio: [
+        { q: "¿Qué función busca valores en tablas de Excel?", a: ["vlookup"], points: 15 },
+        { q: "¿Qué característica de Word crea documentos base?", a: ["plantillas"], points: 15 },
+        { q: "¿Qué función condicional de Excel prueba condiciones?", a: ["if"], points: 15 },
+        { q: "¿Qué vista de PowerPoint muestra diapositivas en miniatura?", a: ["vista normal"], points: 15 },
+        { q: "¿Qué herramienta de Word revisa ortografía?", a: ["revision"], points: 15 },
+        { q: "¿Qué función de Excel cuenta celdas no vacías?", a: ["counta"], points: 15 },
+        { q: "¿Qué formato exporta PowerPoint para web?", a: [".html"], points: 15 },
+        { q: "¿Qué herramienta de Word fusiona documentos con datos?", a: ["combinar correspondencia"], points: 15 },
+        { q: "¿Qué referencia de Excel es absoluta?", a: ["$a$1"], points: 15 },
+        { q: "¿Qué complemento de Office crea diagramas?", a: ["smartart"], points: 15 }
+      ],
+      ofimatica_dificil: [
+        { q: "¿Qué función de Excel busca en matrices?", a: ["index match"], points: 20 },
+        { q: "¿Qué lenguaje programa macros en Office?", a: ["vba"], points: 20 },
+        { q: "¿Qué función de Excel extrae texto?", a: ["mid"], points: 20 },
+        { q: "¿Qué herramienta de PowerPoint sincroniza animaciones?", a: ["panel de animacion"], points: 20 },
+        { q: "¿Qué característica de Word protege documentos?", a: ["restrict editing"], points: 20 },
+        { q: "¿Qué función de Excel trabaja con bases de datos?", a: ["database functions"], points: 20 },
+        { q: "¿Qué formato de intercambio usa Access?", a: [".accdb"], points: 20 },
+        { q: "¿Qué herramienta de Excel analiza datos?", a: ["tabla dinamica"], points: 20 },
+        { q: "¿Qué función de Word compara documentos?", a: ["comparar"], points: 20 },
+        { q: "¿Qué formato de PowerPoint es de presentación?", a: [".ppsx"], points: 20 }
+      ],
+      redes_facil: [
+        { q: "¿Qué topología de red conecta todos los dispositivos a un punto central?", a: ["estrella"], points: 10 },
+        { q: "¿Qué dispositivo conecta dispositivos en una red LAN?", a: ["switch"], points: 10 },
+        { q: "¿Qué protocolo asigna direcciones IP automáticamente?", a: ["dhcp"], points: 10 },
+        { q: "¿Qué clase de IP es 192.168.1.1?", a: ["clase c"], points: 10 },
+        { q: "¿Qué herramienta prueba conectividad?", a: ["ping"], points: 10 },
+        { q: "¿Qué máscara tiene una red clase C por defecto?", a: ["255.255.255.0"], points: 10 },
+        { q: "¿Qué cable de red es más común?", a: ["utp cat5e"], points: 10 },
+        { q: "¿Qué dispositivo separa redes?", a: ["router"], points: 10 },
+        { q: "¿Qué servicio traduce nombres a IP?", a: ["dns"], points: 10 },
+        { q: "¿Qué puerto usa HTTP?", a: ["80"], points: 10 }
+      ],
+      redes_medio: [
+        { q: "¿Qué capa OSI maneja el enrutamiento?", a: ["red", "capa 3"], points: 15 },
+        { q: "¿Qué protocolo de capa 2 previene bucles?", a: ["stp"], points: 15 },
+        { q: "¿Qué tipo de dirección MAC es única?", a: ["unicast"], points: 15 },
+        { q: "¿Qué comando muestra la tabla ARP?", a: ["arp -a"], points: 15 },
+        { q: "¿Qué VLAN es nativa por defecto?", a: ["vlan 1"], points: 15 },
+        { q: "¿Qué cable se usa entre switches?", a: ["cable cruzado"], points: 15 },
+        { q: "¿Qué protocolo gestiona errores en capa 2?", a: ["fcs"], points: 15 },
+        { q: "¿Qué tipo de dominio de colisión tiene un switch?", a: ["dominio por puerto"], points: 15 },
+        { q: "¿Qué dirección IP es de loopback?", a: ["127.0.0.1"], points: 15 },
+        { q: "¿Qué estándar define Ethernet?", a: ["ieee 802.3"], points: 15 }
+      ],
+      redes_dificil: [
+        { q: "¿Qué protocolo usa UDP para comunicación sin conexión?", a: ["dhcp"], points: 20 },
+        { q: "¿Qué tipo de NAT traduce múltiples IP privadas a una pública?", a: ["pat"], points: 20 },
+        { q: "¿Qué algoritmo de spanning tree es rápido?", a: ["rstp"], points: 20 },
+        { q: "¿Qué protocolo de capa 3 descubre vecinos?", a: ["cdp"], points: 20 },
+        { q: "¿Qué tipo de QoS prioriza tráfico?", a: ["diffserv"], points: 20 },
+        { q: "¿Qué tecnología agrega enlaces?", a: ["etherchannel"], points: 20 },
+        { q: "¿Qué protocolo autentica dispositivos en red?", a: ["802.1x"], points: 20 },
+        { q: "¿Qué tipo de VPN usa IPsec?", a: ["site to site"], points: 20 },
+        { q: "¿Qué herramienta analiza paquetes?", a: ["wireshark"], points: 20 },
+        { q: "¿Qué protocolo de enrutamiento usa distancia administrativa?", a: ["eigrp"], points: 20 }
+      ],
+      ingles_facil: [
+        { q: "¿Cómo se dice 'ordenador' en inglés?", a: ["computer"], points: 10 },
+        { q: "¿Cómo se dice 'ratón' en inglés?", a: ["mouse"], points: 10 },
+        { q: "¿Cómo se dice 'teclado' en inglés?", a: ["keyboard"], points: 10 },
+        { q: "¿Cómo se dice 'pantalla' en inglés?", a: ["screen", "monitor"], points: 10 },
+        { q: "¿Cómo se dice 'imprimir' en inglés?", a: ["print"], points: 10 },
+        { q: "¿Cómo se dice 'archivo' en inglés?", a: ["file"], points: 10 },
+        { q: "¿Cómo se dice 'carpeta' en inglés?", a: ["folder"], points: 10 },
+        { q: "¿Cómo se dice 'red' en inglés?", a: ["network"], points: 10 },
+        { q: "¿Cómo se dice 'software' en inglés?", a: ["software"], points: 10 },
+        { q: "¿Cómo se dice 'hardware' en inglés?", a: ["hardware"], points: 10 }
+      ],
+      ingles_medio: [
+        { q: "¿Cómo se dice 'configuración' en inglés?", a: ["configuration"], points: 15 },
+        { q: "¿Cómo se dice 'mantenimiento' en inglés?", a: ["maintenance"], points: 15 },
+        { q: "¿Cómo se dice 'instalación' en inglés?", a: ["installation"], points: 15 },
+        { q: "¿Cómo se dice 'soporte técnico' en inglés?", a: ["technical support"], points: 15 },
+        { q: "¿Cómo se dice 'dirección IP' en inglés?", a: ["ip address"], points: 15 },
+        { q: "¿Cómo se dice 'contraseña' en inglés?", a: ["password"], points: 15 },
+        { q: "¿Cómo se dice 'usuario' en inglés?", a: ["user"], points: 15 },
+        { q: "¿Cómo se dice 'seguridad' en inglés?", a: ["security"], points: 15 },
+        { q: "¿Cómo se dice 'backup' en inglés?", a: ["backup"], points: 15 },
+        { q: "¿Cómo se dice 'actualización' en inglés?", a: ["update"], points: 15 }
+      ],
+      ingles_dificil: [
+        { q: "¿Cómo se dice 'solución de problemas' en inglés?", a: ["troubleshooting"], points: 20 },
+        { q: "¿Cómo se dice 'virtualización' en inglés?", a: ["virtualization"], points: 20 },
+        { q: "¿Cómo se dice 'infraestructura' en inglés?", a: ["infrastructure"], points: 20 },
+        { q: "¿Cómo se dice 'escalabilidad' en inglés?", a: ["scalability"], points: 20 },
+        { q: "¿Cómo se dice 'almacenamiento en la nube' en inglés?", a: ["cloud storage"], points: 20 },
+        { q: "¿Cómo se dice 'rendimiento' en inglés?", a: ["performance"], points: 20 },
+        { q: "¿Cómo se dice 'compatibilidad' en inglés?", a: ["compatibility"], points: 20 },
+        { q: "¿Cómo se dice 'interfaz de usuario' en inglés?", a: ["user interface"], points: 20 },
+        { q: "¿Cómo se dice 'experiencia de usuario' en inglés?", a: ["user experience"], points: 20 },
+        { q: "¿Cómo se dice 'ciberseguridad' en inglés?", a: ["cybersecurity"], points: 20 }
+      ],
+      empleabilidad_facil: [
+        { q: "¿Qué documento presenta habilidades para buscar trabajo?", a: ["curriculum"], points: 10 },
+        { q: "¿Qué plataforma profesional conecta con empresas?", a: ["linkedin"], points: 10 },
+        { q: "¿Qué es una entrevista de trabajo?", a: ["entrevista laboral"], points: 10 },
+        { q: "¿Qué carta se envía con el CV?", a: ["carta de presentacion"], points: 10 },
+        { q: "¿Qué habilidad es trabajar en equipo?", a: ["teamwork"], points: 10 },
+        { q: "¿Qué actitud es positiva ante problemas?", a: ["proactividad"], points: 10 },
+        { q: "¿Qué red social profesional existe?", a: ["linkedin"], points: 10 },
+        { q: "¿Qué documento prueba experiencia laboral?", a: ["certificado de trabajo"], points: 10 },
+        { q: "¿Qué competencia es resolver problemas?", a: ["problem solving"], points: 10 },
+        { q: "¿Qué actitud muestra responsabilidad?", a: ["compromiso"], points: 10 }
+      ],
+      empleabilidad_medio: [
+        { q: "¿Qué técnica busca empleo activamente?", a: ["busqueda activa"], points: 15 },
+        { q: "¿Qué documento planifica objetivos profesionales?", a: ["plan de carrera"], points: 15 },
+        { q: "¿Qué habilidad es comunicarse efectivamente?", a: ["comunicacion"], points: 15 },
+        { q: "¿Qué tipo de entrevista es con varias personas?", a: ["entrevista grupal"], points: 15 },
+        { q: "¿Qué actitud es adaptarse a cambios?", a: ["flexibilidad"], points: 15 },
+        { q: "¿Qué competencia es gestionar tiempo?", a: ["gestion del tiempo"], points: 15 },
+        { q: "¿Qué herramienta organiza tareas?", a: ["agenda"], points: 15 },
+        { q: "¿Qué tipo de contrato es por tiempo indefinido?", a: ["contrato fijo"], points: 15 },
+        { q: "¿Qué actitud es aprender continuamente?", a: ["formacion continua"], points: 15 },
+        { q: "¿Qué red contacta profesionales?", a: ["networking"], points: 15 }
+      ],
+      empleabilidad_dificil: [
+        { q: "¿Qué técnica personaliza cada solicitud?", a: ["cv personalizado"], points: 20 },
+        { q: "¿Qué método prepara respuestas de entrevista?", a: ["preparacion star"], points: 20 },
+        { q: "¿Qué competencia es liderar equipos?", a: ["liderazgo"], points: 20 },
+        { q: "¿Qué actitud es gestionar estrés?", a: ["resiliencia"], points: 20 },
+        { q: "¿Qué herramienta analiza fortalezas?", a: ["dafo"], points: 20 },
+        { q: "¿Qué tipo de empleo es autónomo?", a: ["freelance"], points: 20 },
+        { q: "¿Qué competencia es negociar?", a: ["negociacion"], points: 20 },
+        { q: "¿Qué técnica mejora productividad?", a: ["tecnica pomodoro"], points: 20 },
+        { q: "¿Qué actitud es iniciativa propia?", a: ["emprendimiento"], points: 20 },
+        { q: "¿Qué documento evalúa desempeño?", a: ["evaluacion de desempeno"], points: 20 }
+      ],
+      sistemasred_facil: [
+        { q: "¿Qué sistema operativo para servidores es desarrollado por Microsoft?", a: ["windows server"], points: 10 },
+        { q: "¿Qué servicio de Windows Server permite asignar direcciones IP automáticamente?", a: ["dhcp"], points: 10 },
+        { q: "¿Qué protocolo se usa para la resolución de nombres en una red?", a: ["dns"], points: 10 },
+        { q: "¿Qué comando muestra la configuración de red en Linux?", a: ["ifconfig", "ip a"], points: 10 },
+        { q: "¿Qué herramienta de Windows Server administra usuarios y grupos?", a: ["usuarios y equipos de active directory"], points: 10 },
+        { q: "¿Qué unidad organizativa se crea por defecto en Active Directory?", a: ["users"], points: 10 },
+        { q: "¿Qué protocolo utiliza Active Directory para autenticación?", a: ["kerberos"], points: 10 },
+        { q: "¿Qué comando en Linux muestra el nombre del equipo?", a: ["hostname"], points: 10 },
+        { q: "¿Qué sistema de archivos utiliza Windows Server por defecto?", a: ["ntfs"], points: 10 },
+        { q: "¿Qué servicio permite compartir archivos en red en Windows Server?", a: ["compartir archivos", "file server"], points: 10 }
+      ],
+      sistemasred_medio: [
+        { q: "¿Qué política de grupo (GPO) aplica configuración a todos los usuarios de un dominio?", a: ["default domain policy"], points: 15 },
+        { q: "¿Qué herramienta de administración remota se usa en Windows Server?", a: ["escritorio remoto", "remote desktop"], points: 15 },
+        { q: "¿Qué rol instalarías para crear un controlador de dominio?", a: ["active directory domain services"], points: 15 },
+        { q: "¿Qué comando de Linux actualiza la lista de paquetes en distribuciones basadas en Debian?", a: ["apt update"], points: 15 },
+        { q: "¿Qué puerto usa LDAP por defecto?", a: ["389"], points: 15 },
+        { q: "¿Qué tipo de resolución de nombres traduce nombres NetBIOS a direcciones IP?", a: ["wins"], points: 15 },
+        { q: "¿Qué objeto de Active Directory representa un equipo en la red?", a: ["computer"], points: 15 },
+        { q: "¿Qué comando de Windows Server promueve un servidor a controlador de dominio?", a: ["dcpromo"], points: 15 },
+        { q: "¿Qué servicio de nombres de dominio utiliza zonas?", a: ["dns"], points: 15 },
+        { q: "¿Qué fichero de Linux contiene las direcciones de los servidores DNS?", a: ["/etc/resolv.conf"], points: 15 }
+      ],
+      sistemasred_dificil: [
+        { q: "¿Qué es un bosque (forest) en Active Directory?", a: ["conjunto de dominios que comparten un esquema"], points: 20 },
+        { q: "¿Qué comando de PowerShell crea un nuevo usuario en Active Directory?", a: ["new-aduser"], points: 20 },
+        { q: "¿Qué réplica de Active Directory contiene todos los objetos del dominio?", a: ["global catalog"], points: 20 },
+        { q: "¿Qué protocolo de sincronización horaria usan los controladores de dominio?", a: ["ntp"], points: 20 },
+        { q: "¿Qué nivel funcional de dominio permite utilizar características de Windows Server 2016?", a: ["windows server 2016"], points: 20 },
+        { q: "¿Qué herramienta de línea de comandos en Linux se usa para la administración de usuarios?", a: ["useradd", "usermod"], points: 20 },
+        { q: "¿Qué es un enlace simbólico en Linux?", a: ["archivo que apunta a otro archivo"], points: 20 },
+        { q: "¿Qué comando de Linux cambia el propietario de un archivo?", a: ["chown"], points: 20 },
+        { q: "¿Qué puerto usa LDAP sobre SSL?", a: ["636"], points: 20 },
+        { q: "¿Qué es un trust entre dominios?", a: ["relación que permite autenticación entre dominios"], points: 20 }
+      ],
+      seguridad_facil: [
+        { q: "¿Qué tipo de malware se propaga automáticamente sin intervención del usuario?", a: ["gusano", "worm"], points: 10 },
+        { q: "¿Qué software protege contra virus y malware?", a: ["antivirus"], points: 10 },
+        { q: "¿Qué técnica de suplantación envía correos falsos para obtener información?", a: ["phishing"], points: 10 },
+        { q: "¿Qué dispositivo de red filtra tráfico no deseado?", a: ["firewall", "cortafuegos"], points: 10 },
+        { q: "¿Qué tipo de ataque consiste en interceptar comunicaciones?", a: ["hombre en el medio", "man in the middle"], points: 10 },
+        { q: "¿Qué protocolo cifra el tráfico web?", a: ["https"], points: 10 },
+        { q: "¿Qué es una copia de seguridad?", a: ["backup"], points: 10 },
+        { q: "¿Qué tipo de contraseña es más segura?", a: ["contraseña larga y compleja"], points: 10 },
+        { q: "¿Qué ataque consiste en saturar un servidor con tráfico?", a: ["ddos", "denegacion de servicio"], points: 10 },
+        { q: "¿Qué tecnología verifica la identidad de un usuario?", a: ["autenticacion"], points: 10 }
+      ],
+      seguridad_medio: [
+        { q: "¿Qué algoritmo de cifrado simétrico es más común?", a: ["aes"], points: 15 },
+        { q: "¿Qué tipo de análisis de seguridad evalúa vulnerabilidades?", a: ["auditoria"], points: 15 },
+        { q: "¿Qué protocolo de red es seguro para transferir archivos?", a: ["sftp", "scp"], points: 15 },
+        { q: "¿Qué mecanismo impide que un usuario realice acciones no autorizadas?", a: ["control de acceso"], points: 15 },
+        { q: "¿Qué es un honeypot?", a: ["sistema señuelo para detectar atacantes"], points: 15 },
+        { q: "¿Qué estándar de seguridad inalámbrica es más seguro?", a: ["wpa3", "wpa2"], points: 15 },
+        { q: "¿Qué ataque de inyección afecta a bases de datos?", a: ["sql injection"], points: 15 },
+        { q: "¿Qué tipo de autenticación usa dos factores?", a: ["2fa", "autenticacion de dos factores"], points: 15 },
+        { q: "¿Qué es un certificado digital?", a: ["documento electrónico que vincula una identidad con una clave pública"], points: 15 },
+        { q: "¿Qué política de contraseñas se recomienda?", a: ["complejidad y caducidad"], points: 15 }
+      ],
+      seguridad_dificil: [
+        { q: "¿Qué es un IDS?", a: ["sistema de detección de intrusiones"], points: 20 },
+        { q: "¿Qué diferencia hay entre cifrado simétrico y asimétrico?", a: ["simétrico usa misma clave, asimétrico usa pública y privada"], points: 20 },
+        { q: "¿Qué es un rootkit?", a: ["malware que oculta su presencia en el sistema"], points: 20 },
+        { q: "¿Qué ataque de fuerza bruta consiste en probar todas las combinaciones?", a: ["fuerza bruta"], points: 20 },
+        { q: "¿Qué es un ataque de diccionario?", a: ["probar contraseñas comunes de un diccionario"], points: 20 },
+        { q: "¿Qué protocolo seguro se usa para administración remota?", a: ["ssh"], points: 20 },
+        { q: "¿Qué es un VPN?", a: ["red privada virtual"], points: 20 },
+        { q: "¿Qué tipo de firewall analiza el estado de las conexiones?", a: ["stateful inspection"], points: 20 },
+        { q: "¿Qué es un ataque de replay?", a: ["reenvío de datos válidos interceptados"], points: 20 },
+        { q: "¿Qué organismo emite certificados digitales?", a: ["autoridad de certificación"], points: 20 }
+      ],
+      servicios_facil: [
+        { q: "¿Qué servicio web utiliza el puerto 80?", a: ["http"], points: 10 },
+        { q: "¿Qué protocolo se usa para enviar correo?", a: ["smtp"], points: 10 },
+        { q: "¿Qué servicio permite la transferencia de archivos?", a: ["ftp"], points: 10 },
+        { q: "¿Qué servicio asigna direcciones IP en una red?", a: ["dhcp"], points: 10 },
+        { q: "¿Qué servicio traduce nombres de dominio a IP?", a: ["dns"], points: 10 },
+        { q: "¿Qué puerto usa el protocolo HTTPS?", a: ["443"], points: 10 },
+        { q: "¿Qué protocolo se usa para acceder remotamente a otro ordenador?", a: ["rdp"], points: 10 },
+        { q: "¿Qué servicio web de Microsoft se llama IIS?", a: ["internet information services"], points: 10 },
+        { q: "¿Qué protocolo de correo descarga mensajes al cliente?", a: ["pop3"], points: 10 },
+        { q: "¿Qué servicio permite el acceso anónimo a archivos?", a: ["ftp anonimo"], points: 10 }
+      ],
+      servicios_medio: [
+        { q: "¿Qué comando de Linux inicia un servicio?", a: ["systemctl start"], points: 15 },
+        { q: "¿Qué archivo de configuración de Apache contiene directivas principales?", a: ["httpd.conf"], points: 15 },
+        { q: "¿Qué servidor web de código abierto es más popular?", a: ["apache"], points: 15 },
+        { q: "¿Qué protocolo de correo permite gestión de carpetas en el servidor?", a: ["imap"], points: 15 },
+        { q: "¿Qué zona DNS contiene las direcciones de los servidores de correo?", a: ["mx"], points: 15 },
+        { q: "¿Qué archivo de configuración de DHCP define las opciones de red?", a: ["dhcpd.conf"], points: 15 },
+        { q: "¿Qué servicio de autenticación centralizada usa tickets?", a: ["kerberos"], points: 15 },
+        { q: "¿Qué protocolo ligero de directorios se usa para autenticación?", a: ["ldap"], points: 15 },
+        { q: "¿Qué comando verifica la resolución DNS de un dominio?", a: ["nslookup"], points: 15 },
+        { q: "¿Qué registro DNS apunta un subdominio a otro nombre?", a: ["cname"], points: 15 }
+      ],
+      servicios_dificil: [
+        { q: "¿Qué es un balanceador de carga?", a: ["dispositivo que distribuye tráfico entre servidores"], points: 20 },
+        { q: "¿Qué directiva de Apache permite hosts virtuales?", a: ["virtualhost"], points: 20 },
+        { q: "¿Qué protocolo de autenticación usa RADIUS?", a: ["radius"], points: 20 },
+        { q: "¿Qué es un proxy inverso?", a: ["servidor proxy que oculta servidores internos"], points: 20 },
+        { q: "¿Qué archivo de zona DNS define la dirección de un dominio?", a: ["archivo de zona"], points: 20 },
+        { q: "¿Qué servidor DHCP avanzado permite asignaciones por MAC?", a: ["reservas dhcp"], points: 20 },
+        { q: "¿Qué protocolo de red gestiona grupos multicast?", a: ["igmp"], points: 20 },
+        { q: "¿Qué servicio de Microsoft proporciona directorio distribuido?", a: ["active directory"], points: 20 },
+        { q: "¿Qué comando de Linux muestra las rutas de red?", a: ["route", "ip route"], points: 20 },
+        { q: "¿Qué configuración de DNS mejora la seguridad?", a: ["dnsec"], points: 20 }
+      ],
+      web_facil: [
+        { q: "¿Qué lenguaje de programación se usa principalmente en el frontend web?", a: ["javascript"], points: 10 },
+        { q: "¿Qué lenguaje define la estructura de una página web?", a: ["html"], points: 10 },
+        { q: "¿Qué lenguaje define el estilo visual de una web?", a: ["css"], points: 10 },
+        { q: "¿Qué etiqueta HTML se usa para enlaces?", a: ["a", "a href"], points: 10 },
+        { q: "¿Qué etiqueta HTML se usa para imágenes?", a: ["img"], points: 10 },
+        { q: "¿Qué CMS es el más popular para blogs?", a: ["wordpress"], points: 10 },
+        { q: "¿Qué servicio de alojamiento web se llama hosting?", a: ["hosting"], points: 10 },
+        { q: "¿Qué protocolo se usa para transferir archivos web?", a: ["ftp"], points: 10 },
+        { q: "¿Qué extensión tienen los archivos JavaScript?", a: [".js"], points: 10 },
+        { q: "¿Qué etiqueta HTML se usa para párrafos?", a: ["p"], points: 10 }
+      ],
+      web_medio: [
+        { q: "¿Qué framework de JavaScript es desarrollado por Google?", a: ["angular"], points: 15 },
+        { q: "¿Qué librería de JavaScript simplifica la manipulación del DOM?", a: ["jquery"], points: 15 },
+        { q: "¿Qué propiedad de CSS alinea texto?", a: ["text-align"], points: 15 },
+        { q: "¿Qué atributo HTML define la dirección de un enlace?", a: ["href"], points: 15 },
+        { q: "¿Qué base de datos suele usarse con PHP?", a: ["mysql"], points: 15 },
+        { q: "¿Qué lenguaje de servidor es común en el desarrollo web?", a: ["php"], points: 15 },
+        { q: "¿Qué elemento de formulario permite seleccionar una opción?", a: ["select"], points: 15 },
+        { q: "¿Qué tipo de diseño web se adapta a diferentes pantallas?", a: ["responsive"], points: 15 },
+        { q: "¿Qué plugin de WordPress añade funcionalidades?", a: ["plugin"], points: 15 },
+        { q: "¿Qué función de JavaScript muestra un mensaje en pantalla?", a: ["alert"], points: 15 }
+      ],
+      web_dificil: [
+        { q: "¿Qué arquitectura web separa frontend y backend mediante APIs?", a: ["spa", "single page application"], points: 20 },
+        { q: "¿Qué método HTTP se usa para enviar datos en un formulario?", a: ["post"], points: 20 },
+        { q: "¿Qué API del navegador permite almacenamiento local?", a: ["localstorage"], points: 20 },
+        { q: "¿Qué formato de intercambio de datos es ligero y común en APIs?", a: ["json"], points: 20 },
+        { q: "¿Qué tecnología permite comunicación en tiempo real cliente-servidor?", a: ["websockets"], points: 20 },
+        { q: "¿Qué framework de CSS utiliza clases utilitarias?", a: ["tailwind"], points: 20 },
+        { q: "¿Qué lenguaje de plantillas usa Django?", a: ["django templates"], points: 20 },
+        { q: "¿Qué tipo de ataque web consiste en ejecutar scripts no autorizados?", a: ["xss"], points: 20 },
+        { q: "¿Qué estándar web define la semántica de los documentos HTML5?", a: ["w3c"], points: 20 },
+        { q: "¿Qué herramienta de desarrollo web automatiza tareas?", a: ["gulp", "grunt"], points: 20 }
+      ],
+      empleabilidad2_facil: [
+        { q: "¿Qué documento refleja los derechos y deberes de un trabajador?", a: ["contrato de trabajo"], points: 10 },
+        { q: "¿Qué tipo de contrato tiene duración determinada?", a: ["contrato temporal"], points: 10 },
+        { q: "¿Qué parte del salario se destina a la seguridad social?", a: ["cotizacion"], points: 10 },
+        { q: "¿Qué prestación recibe un trabajador al finalizar su vida laboral?", a: ["jubilacion"], points: 10 },
+        { q: "¿Qué organismo gestiona el desempleo en España?", a: ["sepe"], points: 10 },
+        { q: "¿Qué derecho permite ausentarse del trabajo por motivo justificado?", a: ["permiso"], points: 10 },
+        { q: "¿Qué documento recoge las funciones de un puesto?", a: ["descripcion del puesto"], points: 10 },
+        { q: "¿Qué tipo de jornada laboral es de 40 horas semanales?", a: ["jornada completa"], points: 10 },
+        { q: "¿Qué formación complementaria mejora la empleabilidad?", a: ["formacion profesional", "cursos"], points: 10 },
+        { q: "¿Qué habilidad interpersonal es valorada en el trabajo?", a: ["trabajo en equipo"], points: 10 }
+      ],
+      empleabilidad2_medio: [
+        { q: "¿Qué tipo de contrato fomenta la contratación de jóvenes?", a: ["contrato en practicas", "contrato formacion"], points: 15 },
+        { q: "¿Qué porcentaje del salario puede ser en especie?", a: ["30%"], points: 15 },
+        { q: "¿Qué prestación recibe un trabajador durante una baja por enfermedad?", a: ["incapacidad temporal"], points: 15 },
+        { q: "¿Qué convenio regula las condiciones laborales de un sector?", a: ["convenio colectivo"], points: 15 },
+        { q: "¿Qué tipo de contrato puede convertirse en indefinido?", a: ["contrato temporal"], points: 15 },
+        { q: "¿Qué organismo media en conflictos laborales?", a: ["simac", "fundacion laboral"], points: 15 },
+        { q: "¿Qué deducción fiscal tiene un trabajador por hijos?", a: ["deduccion por descendientes"], points: 15 },
+        { q: "¿Qué tipo de despido es procedente?", a: ["despido disciplinario justificado"], points: 15 },
+        { q: "¿Qué documento entrega la empresa al finalizar un contrato?", a: ["finiquito"], points: 15 },
+        { q: "¿Qué tipo de jornada se distribuye de forma irregular?", a: ["jornada irregular"], points: 15 }
+      ],
+      empleabilidad2_dificil: [
+        { q: "¿Qué es un ERTE?", a: ["expediente de regulación temporal de empleo"], points: 20 },
+        { q: "¿Qué diferencia hay entre autónomo y asalariado?", a: ["autónomo trabaja por cuenta propia, asalariado por cuenta ajena"], points: 20 },
+        { q: "¿Qué tipo de prestación cubre la falta de ingresos por cese de actividad de un autónomo?", a: ["cese de actividad"], points: 20 },
+        { q: "¿Qué plazo tiene una empresa para pagar el finiquito?", a: ["al finalizar el contrato"], points: 20 },
+        { q: "¿Qué es la base de cotización?", a: ["cantidad sobre la que se calculan las cotizaciones"], points: 20 },
+        { q: "¿Qué es el salario mínimo interprofesional?", a: ["cuantía mínima que puede cobrar un trabajador"], points: 20 },
+        { q: "¿Qué tipo de contrato puede tener periodo de prueba?", a: ["cualquier contrato"], points: 20 },
+        { q: "¿Qué es un plan de igualdad en la empresa?", a: ["medidas para garantizar igualdad de trato"], points: 20 },
+        { q: "¿Qué es la negociación colectiva?", a: ["diálogo entre empresa y sindicatos"], points: 20 },
+        { q: "¿Qué es el teletrabajo?", a: ["trabajo a distancia mediante TIC"], points: 20 }
+      ],
+      proyecto_facil: [
+        { q: "¿Qué documento describe el alcance de un proyecto?", a: ["acta de proyecto"], points: 10 },
+        { q: "¿Qué técnica identifica riesgos en un proyecto?", a: ["analisis de riesgos"], points: 10 },
+        { q: "¿Qué fase del proyecto define los entregables?", a: ["planificacion"], points: 10 },
+        { q: "¿Qué herramienta visual representa tareas en el tiempo?", a: ["diagrama de gantt"], points: 10 },
+        { q: "¿Qué reunión marca el inicio de un proyecto?", a: ["kickoff"], points: 10 },
+        { q: "¿Qué documento recoge los requisitos del proyecto?", a: ["especificacion de requisitos"], points: 10 },
+        { q: "¿Qué rol lidera el equipo de proyecto?", a: ["jefe de proyecto"], points: 10 },
+        { q: "¿Qué tipo de proyecto desarrolla software?", a: ["proyecto informatico"], points: 10 },
+        { q: "¿Qué técnica divide el trabajo en paquetes?", a: ["edt", "estructura de desglose del trabajo"], points: 10 },
+        { q: "¿Qué recurso es indispensable en un proyecto?", a: ["equipo humano"], points: 10 }
+      ],
+      proyecto_medio: [
+        { q: "¿Qué metodología ágil usa sprints?", a: ["scrum"], points: 15 },
+        { q: "¿Qué herramienta de seguimiento registra incidencias?", a: ["jira", "trello"], points: 15 },
+        { q: "¿Qué tipo de costes incluyen materiales y personal?", a: ["costes directos"], points: 15 },
+        { q: "¿Qué documento evalúa la viabilidad del proyecto?", a: ["estudio de viabilidad"], points: 15 },
+        { q: "¿Qué técnica prioriza requisitos por valor y esfuerzo?", a: ["moescow"], points: 15 },
+        { q: "¿Qué es un hito en un proyecto?", a: ["evento importante"], points: 15 },
+        { q: "¿Qué fase comprueba que el producto cumple requisitos?", a: ["pruebas"], points: 15 },
+        { q: "¿Qué documento recoge lecciones aprendidas?", a: ["informe final"], points: 15 },
+        { q: "¿Qué es un stakeholder?", a: ["interesado en el proyecto"], points: 15 },
+        { q: "¿Qué tipo de proyecto tiene fecha de inicio y fin?", a: ["proyecto temporal"], points: 15 }
+      ],
+      proyecto_dificil: [
+        { q: "¿Qué diferencia hay entre proyecto y operación?", a: ["proyecto es temporal, operación continua"], points: 20 },
+        { q: "¿Qué certificación internacional en gestión de proyectos es reconocida?", a: ["pmp", "prince2"], points: 20 },
+        { q: "¿Qué técnica de estimación usa tres valores: optimista, pesimista y más probable?", a: ["pert"], points: 20 },
+        { q: "¿Qué es el valor ganado (earned value)?", a: ["técnica para medir el desempeño del proyecto"], points: 20 },
+        { q: "¿Qué es un acta de cierre de proyecto?", a: ["documento formal que finaliza el proyecto"], points: 20 },
+        { q: "¿Qué metodología de gestión de proyectos se basa en cascada?", a: ["waterfall"], points: 20 },
+        { q: "¿Qué es el alcance de un proyecto?", a: ["trabajo que se debe realizar"], points: 20 },
+        { q: "¿Qué es un plan de contingencia?", a: ["plan para riesgos identificados"], points: 20 },
+        { q: "¿Qué es un entregable?", a: ["producto o servicio resultado del proyecto"], points: 20 },
+        { q: "¿Qué es la ruta crítica en un proyecto?", a: ["secuencia de tareas que determina la duración del proyecto"], points: 20 }
+      ]
     };
 
     const shopItems = [
@@ -3817,18 +4191,26 @@
     ];
 
     const minigameQuestions = [
-      { q: "¿Qué puerto utiliza LDAP sin cifrado por defecto?", options: ["389", "636", "3268", "3269"], correct: 0, coins: 5, explanation: "El puerto 389 es el estándar para LDAP." }
-      // ... resto de preguntas del minijuego ...
+      { q: "¿Qué puerto utiliza LDAP sin cifrado por defecto?", options: ["389", "636", "3268", "3269"], correct: 0, coins: 5, explanation: "El puerto 389 es el estándar para LDAP." },
+      { q: "¿Qué nivel de RAID combina striping y paridad distribuida?", options: ["RAID 3", "RAID 5", "RAID 6", "RAID 10"], correct: 1, coins: 5, explanation: "RAID 5 distribuye los datos y la información de paridad entre todos los discos." },
+      { q: "¿Qué protocolo se usa para sincronizar bases de datos de Active Directory?", options: ["LDAP", "Kerberos", "NTLM", "DFS-R"], correct: 3, coins: 5, explanation: "DFS-R es el protocolo para la replicación entre controladores de dominio." },
+      { q: "¿Qué comando de Linux permite modificar la tabla de rutas?", options: ["route", "ip route", "netstat", "traceroute"], correct: 1, coins: 5, explanation: "El comando 'ip route' es la forma moderna de gestionar rutas en Linux." },
+      { q: "¿Qué tipo de zona DNS permite actualizaciones dinámicas seguras?", options: ["Zona primaria", "Zona integrada en AD", "Zona secundaria", "Zona de stub"], correct: 1, coins: 5, explanation: "Las zonas DNS integradas en Active Directory permiten actualizaciones dinámicas seguras." }
     ];
 
     const assemblyQuestions = [
-      { id: 1, category: "IDENTIFICACIÓN", icon: "🖥️", title: "CPU", description: "Componente cuadrado con pines", question: "¿Qué componente es?", options: [{text:"CPU - Procesa instrucciones",icon:"⚡"},{text:"RAM - Memoria temporal",icon:"💾"},{text:"GPU - Gráficos",icon:"🎮"},{text:"SSD - Almacenamiento",icon:"💿"}], correct:0, hint: "Es el cerebro", points:20, coins:12, explanation:"La CPU ejecuta instrucciones." }
-      // ... resto de preguntas de ensamblaje ...
+      { id: 1, category: "IDENTIFICACIÓN", icon: "🖥️", title: "CPU", description: "Componente cuadrado con pines", question: "¿Qué componente es?", options: [{text:"CPU - Procesa instrucciones",icon:"⚡"},{text:"RAM - Memoria temporal",icon:"💾"},{text:"GPU - Gráficos",icon:"🎮"},{text:"SSD - Almacenamiento",icon:"💿"}], correct:0, hint: "Es el cerebro", points:20, coins:12, explanation:"La CPU ejecuta instrucciones." },
+      { id: 2, category: "HERRAMIENTAS", icon: "🔧", title: "Destornillador de Estrella", description: "Herramienta manual con punta en forma de estrella", question: "¿Para qué se usa?", options: [{text:"Aflojar tornillos de cabeza Phillips",icon:"➕"},{text:"Retirar pasta térmica",icon:"🎨"},{text:"Cortar cables",icon:"✂️"},{text:"Medir voltajes",icon:"🔋"}], correct:0, hint: "Muy utilizada en montaje", points:15, coins:8, explanation:"El destornillador de estrella se usa para tornillos de cabeza especial." },
+      { id: 3, category: "PROCEDIMIENTOS", icon: "🛡️", title: "Pulsera Antiestática", description: "Brazalete conectado a tierra", question: "¿Cuál es su propósito?", options: [{text:"Proteger de descargas electrostáticas",icon:"⚡"},{text:"Medir temperatura",icon:"🌡️"},{text:"Cortar cables",icon:"✂️"},{text:"Iluminar zonas oscuras",icon:"💡"}], correct:0, hint: "Esencial antes de manipular componentes sensibles", points:10, coins:5, explanation:"La pulsera antiestática descarga la electricidad estática del cuerpo." },
+      { id: 4, category: "CONEXIONES", icon: "🔌", title: "Conector SATA", description: "Cable plano con conector en L", question: "¿Qué dispositivos conecta?", options: [{text:"Discos duros y unidades ópticas",icon:"💿"},{text:"Tarjeta gráfica",icon:"🎮"},{text:"Ventiladores",icon:"🌀"},{text:"Memoria RAM",icon:"💾"}], correct:0, hint: "Sustituyó a los cables IDE/PATA", points:15, coins:8, explanation:"Los cables SATA conectan unidades de almacenamiento a la placa base." },
+      { id: 5, category: "DIAGNÓSTICO", icon: "🔍", title: "Códigos POST", description: "Secuencia de pitidos", question: "¿Qué indica un pitido largo continuo?", options: [{text:"Error en la memoria RAM",icon:"⚠️"},{text:"Tarjeta gráfica defectuosa",icon:"🎮"},{text:"Procesador sobrecalentado",icon:"🔥"},{text:"Fuente insuficiente",icon:"🔋"}], correct:0, hint: "Los códigos POST varían según BIOS", points:20, coins:12, explanation:"Un pitido largo continuo indica un problema con la memoria RAM." }
     ];
 
     const cableQuestions = [
-      { id:1, type:'t568a', title:'Cable T568A', description:'Ordena según estándar T568A', colors:['verde-blanco','verde','naranja-blanco','azul','azul-blanco','naranja','marrón-blanco','marrón'], correctOrder:[0,1,2,3,4,5,6,7], explanation:'Estándar T568A: 1. Verde-blanco...' }
-      // ... resto de preguntas de cableado ...
+      { id:1, type:'t568a', title:'Cable T568A', description:'Ordena los cables según el estándar T568A', colors:['verde-blanco','verde','naranja-blanco','azul','azul-blanco','naranja','marrón-blanco','marrón'], correctOrder:[0,1,2,3,4,5,6,7], explanation:'Estándar T568A: 1. Verde-blanco, 2. Verde, 3. Naranja-blanco, 4. Azul, 5. Azul-blanco, 6. Naranja, 7. Marrón-blanco, 8. Marrón' },
+      { id:2, type:'t568b', title:'Cable T568B', description:'Ordena los cables según el estándar T568B (el más común)', colors:['naranja-blanco','naranja','verde-blanco','azul','azul-blanco','verde','marrón-blanco','marrón'], correctOrder:[0,1,2,3,4,5,6,7], explanation:'Estándar T568B: 1. Naranja-blanco, 2. Naranja, 3. Verde-blanco, 4. Azul, 5. Azul-blanco, 6. Verde, 7. Marrón-blanco, 8. Marrón' },
+      { id:3, type:'crossover', title:'Cable Cruzado', description:'Para conectar dos dispositivos iguales', colors:['verde-blanco','verde','naranja-blanco','azul','azul-blanco','naranja','marrón-blanco','marrón'], correctOrder:[0,1,2,3,4,5,6,7], explanation:'El cable cruzado tiene un extremo T568A y el otro T568B.' },
+      { id:4, type:'straight', title:'Cable Recto', description:'Para conectar dispositivos diferentes', colors:['naranja-blanco','naranja','verde-blanco','azul','azul-blanco','verde','marrón-blanco','marrón'], correctOrder:[0,1,2,3,4,5,6,7], explanation:'El cable recto tiene ambos extremos con el mismo estándar.' }
     ];
 
     // ============================================
@@ -4031,15 +4413,11 @@
           document.getElementById('cableTimer').textContent = this.timeLeft;
           
           const timerElement = document.getElementById('cableTimer');
-          if (this.timeLeft <= 30) {
-            timerElement.style.color = 'var(--danger)';
-          } else if (this.timeLeft <= 60) {
-            timerElement.style.color = 'var(--warning)';
-          }
+          if (this.timeLeft <= 30) timerElement.style.color = 'var(--danger)';
+          else if (this.timeLeft <= 60) timerElement.style.color = 'var(--warning)';
+          else timerElement.style.color = 'var(--primary)';
 
-          if (this.timeLeft <= 0) {
-            this.endGame();
-          }
+          if (this.timeLeft <= 0) this.endGame();
         }, 1000);
       }
 
@@ -4111,26 +4489,21 @@
               this.sendMessage();
             }
           });
-          input.addEventListener('input', () => {
-            this.updateSendButton();
-          });
+          input.addEventListener('input', () => this.updateSendButton());
         }
       },
       
       updateCurrentTime() {
         const timeElement = document.getElementById('currentTime');
         if (timeElement) {
-          const now = new Date();
-          timeElement.textContent = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+          timeElement.textContent = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
         }
       },
       
       updateSendButton() {
         const input = document.getElementById('chatbotInput');
         const button = document.getElementById('chatbotSendBtn');
-        if (input && button) {
-          button.disabled = input.value.trim().length === 0;
-        }
+        if (input && button) button.disabled = input.value.trim().length === 0;
       },
       
       toggle() {
@@ -4140,8 +4513,7 @@
         if (this.isOpen) {
           window.classList.add('active');
           button.classList.add('active');
-          const input = document.getElementById('chatbotInput');
-          if (input) input.focus();
+          document.getElementById('chatbotInput').focus();
         } else {
           window.classList.remove('active');
           button.classList.remove('active');
@@ -4219,9 +4591,7 @@
         if (this.typingTimeout) clearTimeout(this.typingTimeout);
         
         this.typingTimeout = setTimeout(() => {
-          if (typingIndicator && typingIndicator.parentNode) {
-            typingIndicator.remove();
-          }
+          if (typingIndicator && typingIndicator.parentNode) typingIndicator.remove();
           this.animateStatus('online');
           this.generateResponse(userMessage);
         }, 800 + Math.random() * 1200);
@@ -4296,11 +4666,7 @@
         if (options && options.length > 0) {
           optionsHtml = '<div class="chatbot-quick-actions">';
           options.forEach(option => {
-            optionsHtml += `
-              <button class="quick-action" onclick="selectChatbotOption('${option.replace(/'/g, "\\'")}')">
-                <i class="fas fa-${this.getOptionIcon(option)}"></i> ${option}
-              </button>
-            `;
+            optionsHtml += `<button class="quick-action" onclick="selectChatbotOption('${option.replace(/'/g, "\\'")}')"><i class="fas fa-${this.getOptionIcon(option)}"></i> ${option}</button>`;
           });
           optionsHtml += '</div>';
         }
@@ -4322,35 +4688,24 @@
       
       getOptionIcon(option) {
         const icons = {
-          '¿Cómo jugar?': 'gamepad',
-          'Soporte técnico': 'tools',
-          'Ganar monedas': 'coins',
-          'Contacto humano': 'user-headset',
-          'Problemas con login': 'sign-in-alt',
-          'Error en minijuegos': 'bug',
-          'Personalizar avatar': 'user-edit',
-          'Ver ranking': 'trophy'
+          '¿Cómo jugar?': 'gamepad', 'Soporte técnico': 'tools', 'Ganar monedas': 'coins',
+          'Contacto humano': 'user-headset', 'Problemas con login': 'sign-in-alt',
+          'Error en minijuegos': 'bug', 'Personalizar avatar': 'user-edit', 'Ver ranking': 'trophy'
         };
         for (const [key, icon] of Object.entries(icons)) {
-          if (option.includes(key.split(' ')[0])) {
-            return icon;
-          }
+          if (option.includes(key.split(' ')[0])) return icon;
         }
         return 'question-circle';
       },
       
       scrollToBottom() {
         const messagesContainer = document.getElementById('chatbotMessages');
-        if (messagesContainer) {
-          messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
+        if (messagesContainer) messagesContainer.scrollTop = messagesContainer.scrollHeight;
       },
       
       updateMessageCount() {
         const countElement = document.getElementById('messageCount');
-        if (countElement) {
-          countElement.textContent = `Mensajes: ${this.messageCount}`;
-        }
+        if (countElement) countElement.textContent = `Mensajes: ${this.messageCount}`;
       },
       
       clearHistory() {
@@ -4360,32 +4715,9 @@
           const messagesContainer = document.getElementById('chatbotMessages');
           if (messagesContainer) {
             messagesContainer.innerHTML = `
-              <div class="chatbot-message bot">
-                <div class="message-content">
-                  <span class="message-text">¡Conexión establecida! <span style="color: var(--primary)">Sistema NEXUS-AI</span> activo.</span>
-                  <div class="message-time" id="currentTime"></div>
-                </div>
-                <div class="message-status"><i class="fas fa-bolt" style="color: var(--primary)"></i></div>
-              </div>
-              
-              <div class="chatbot-message bot">
-                <div class="message-content">
-                  <span class="message-text">Historial limpiado ✓. Sistema reiniciado.</span>
-                  <div class="message-time">${new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</div>
-                </div>
-              </div>
-              
-              <div class="chatbot-message bot">
-                <div class="message-content">
-                  <span class="message-text">¿En qué puedo ayudarte hoy?</span>
-                  <div class="chatbot-quick-actions">
-                    <button class="quick-action" onclick="selectChatbotOption('¿Cómo jugar?')"><i class="fas fa-gamepad"></i> Cómo jugar</button>
-                    <button class="quick-action" onclick="selectChatbotOption('Problemas técnicos')"><i class="fas fa-tools"></i> Soporte técnico</button>
-                    <button class="quick-action" onclick="selectChatbotOption('Consejos para ganar monedas')"><i class="fas fa-coins"></i> Ganar monedas</button>
-                    <button class="quick-action" onclick="selectChatbotOption('Contactar con humanos')"><i class="fas fa-user-headset"></i> Contacto humano</button>
-                  </div>
-                </div>
-              </div>
+              <div class="chatbot-message bot"><div class="message-content"><span class="message-text">¡Conexión establecida! <span style="color: var(--primary)">Sistema NEXUS-AI</span> activo.</span><div class="message-time" id="currentTime"></div></div><div class="message-status"><i class="fas fa-bolt" style="color: var(--primary)"></i></div></div>
+              <div class="chatbot-message bot"><div class="message-content"><span class="message-text">Historial limpiado ✓. Sistema reiniciado.</span><div class="message-time">${new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</div></div></div>
+              <div class="chatbot-message bot"><div class="message-content"><span class="message-text">¿En qué puedo ayudarte hoy?</span><div class="chatbot-quick-actions"><button class="quick-action" onclick="selectChatbotOption('¿Cómo jugar?')"><i class="fas fa-gamepad"></i> Cómo jugar</button><button class="quick-action" onclick="selectChatbotOption('Problemas técnicos')"><i class="fas fa-tools"></i> Soporte técnico</button><button class="quick-action" onclick="selectChatbotOption('Consejos para ganar monedas')"><i class="fas fa-coins"></i> Ganar monedas</button><button class="quick-action" onclick="selectChatbotOption('Contactar con humanos')"><i class="fas fa-user-headset"></i> Contacto humano</button></div></div></div>
             `;
           }
           this.updateCurrentTime();
@@ -4396,16 +4728,16 @@
     // ============================================
     // FUNCIONES GLOBALES DEL CHAT
     // ============================================
-    window.toggleChatbot = function() { NexusAI.toggle(); };
-    window.sendChatbotMessage = function() { NexusAI.sendMessage(); };
-    window.handleChatbotKeypress = function(event) {
+    window.toggleChatbot = () => NexusAI.toggle();
+    window.sendChatbotMessage = () => NexusAI.sendMessage();
+    window.handleChatbotKeypress = (event) => {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
         sendChatbotMessage();
       }
     };
-    window.selectChatbotOption = function(option) { NexusAI.selectOption(option); };
-    window.clearChatbotHistory = function() { NexusAI.clearHistory(); };
+    window.selectChatbotOption = (option) => NexusAI.selectOption(option);
+    window.clearChatbotHistory = () => NexusAI.clearHistory();
 
     // ============================================
     // SISTEMA DE ACCESIBILIDAD
@@ -4415,36 +4747,36 @@
     let dyslexiaFont = false;
     let matrixRainActive = true;
 
-    window.toggleAccessibilityMenu = function() {
+    window.toggleAccessibilityMenu = () => {
       const menu = document.getElementById('accessibilityMenu');
       menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
     };
 
-    window.toggleHighContrast = function() {
+    window.toggleHighContrast = () => {
       highContrast = !highContrast;
       document.body.classList.toggle('high-contrast', highContrast);
       localStorage.setItem('highContrast', highContrast);
     };
 
-    window.increaseFontSize = function() {
+    window.increaseFontSize = () => {
       fontSizeMultiplier = Math.min(fontSizeMultiplier + 0.1, 1.5);
       document.body.style.fontSize = `${fontSizeMultiplier}rem`;
       localStorage.setItem('fontSize', fontSizeMultiplier);
     };
 
-    window.decreaseFontSize = function() {
+    window.decreaseFontSize = () => {
       fontSizeMultiplier = Math.max(fontSizeMultiplier - 0.1, 0.8);
       document.body.style.fontSize = `${fontSizeMultiplier}rem`;
       localStorage.setItem('fontSize', fontSizeMultiplier);
     };
 
-    window.toggleDyslexiaFont = function() {
+    window.toggleDyslexiaFont = () => {
       dyslexiaFont = !dyslexiaFont;
       document.body.style.fontFamily = dyslexiaFont ? "'Comic Sans MS', 'Arial', sans-serif" : "'Roboto', sans-serif";
       localStorage.setItem('dyslexiaFont', dyslexiaFont);
     };
 
-    window.toggleMatrixRain = function() {
+    window.toggleMatrixRain = () => {
       matrixRainActive = !matrixRainActive;
       if (matrixRainActive) startMatrixRain();
       else stopMatrixRain();
@@ -4496,7 +4828,6 @@
     // ============================================
     // FUNCIONES DE AUTENTICACIÓN Y JUEGO
     // ============================================
-    
     window.showLoginForm = function(formType) {
       document.querySelectorAll('.login-tab').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
